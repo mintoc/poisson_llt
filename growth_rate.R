@@ -111,3 +111,24 @@ pdf("new_case_poisson_analysis.pdf", height = 8, width = 10)
 plot(m)
 p0; p1; p2
 dev.off()
+
+## probability that delta is decreasing (linear change in delta over time)
+## slope over days for each sample
+dims <- dim(m$BUGSoutput$sims.array)
+nsamp <- dims[1]
+nchains <- dims[2]
+
+slopes <- matrix(NA, nrow = nsamp, ncol = nchains)
+
+for(i in 1:nsamp){
+    for(j in 1:nchains){
+        y <- m$BUGSoutput$sims.array[i, j, grep("delta", dimnames(m$BUGSoutput$sims.array)[[3]])]
+        X <- cbind(1, 1:T)
+        beta <- solve(t(X) %*% X) %*% t(X) %*% matrix(y)
+        slopes[i,j] <- beta[2,1]
+    }
+}
+
+matplot(slopes, type = "l", lty = 1)
+
+prop.table(table(slopes < 0))
