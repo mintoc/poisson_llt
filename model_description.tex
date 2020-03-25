@@ -1,0 +1,14 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+%opening
+\begin{document}
+
+\begin{align*}
+ y_t &\sim \textnormal{Poisson}(\lambda_t) \\
+ \ln(\lambda_{t+1}) &= \ln(\lambda_t) + \delta_t + \epsilon_t, \quad \epsilon_t \sim \textnormal{N}(0, \sigma_{\epsilon}^2) \\
+  \delta_{t+1} &= \delta_t + \eta_t, \quad \eta_t \sim \textnormal{N}(0, \sigma_{\eta}^2)
+\end{align*}
+
+
+\end{document}
