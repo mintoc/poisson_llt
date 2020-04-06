@@ -13,18 +13,14 @@ p[T+i] <- r/(r+lambda[T+i])
  ypred[i] ~ dnegbin(p[T+i], r)
 lambda[T+i] <- exp(log_lambda[T+i])
 }
-for(i in 3:(T+Tf)){
-log_lambda[i] ~ dnorm(2 * log_lambda[i-1] - log_lambda[i-2] + delta[i-1], tau_eps)
+for(i in 2:(T+Tf)){
+log_lambda[i] ~ dnorm(log_lambda[i-1] + delta[i-1], tau_eps)
 }
-for(i in 3:(T+Tf)){
-delta[i] ~ dnorm(2 * delta[i-1] - delta[i-2], tau_eta)
+for(i in 2:(T+Tf)){
+delta[i] ~ dnorm(delta[i-1], tau_eta)
 }
 log_lambda[1] ~ dnorm(0, 10^-6) 
 delta[1] ~ dnorm(0, 10^-6)
-
- log_lambda[2] ~ dnorm(0, 10^-6)
-
- delta[2] ~ dnorm(0, 10^-6)
 sigma_eps ~ dunif(0, 1) 
  tau_eps <- 1 / pow(sigma_eps, 2)
 sigma_eta ~ dunif(0, 1) 

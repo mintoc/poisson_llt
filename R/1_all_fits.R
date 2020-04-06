@@ -10,11 +10,16 @@ library(tidyr)
 library(R2jags)
 ## library(jagsUI)
 ## data
-d <- read.csv("https://raw.githubusercontent.com/mathsnuig/coronaviz/master/data/corona_island.csv")
+d <- read.csv("https://raw.githubusercontent.com/mathsnuig/coronaviz/master/data/corona_ireland.csv") ## need to update with Andrew's new international code, just Ireland here
 
 ## choose a country
 ##countryi <- "ireland"
-countryi <- "italy"
+##countryi <- "italy"
+
+countryi <- "bangladesh"
+if(countryi == "bangladesh"){
+    d <- read.csv("../data/Bangladesh_cases.csv")
+}
 
 s <- d %>%
     filter(country == countryi) %>%
@@ -44,6 +49,9 @@ mods <- expand.grid(dist = c("poisson", "negbin"),
                     stringsAsFactors = FALSE
                     ##DIC = NA
 )
+
+## for Bangladesh early time period exclude rw2 models
+## mods <- mods[!apply(mods, 1, function(z){any(z == "rw2")}),]
 
 data <- list(y = n,
              T = T,
